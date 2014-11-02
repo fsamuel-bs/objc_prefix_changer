@@ -19,7 +19,7 @@ replace_filename_in_file () {
 }
 export -f replace_filename_in_file
 
-#replace_filename_in_all_files $file_name $new_file_nam
+#replace_filename_in_all_files $file_name $new_file_name
 replace_filename_in_all_files() {
   files_with_m=`find $project_name -type f -name "*.m"`
   files_with_h=`find $project_name -type f -name "*.h"`
@@ -68,6 +68,7 @@ export -f replace_path
 
 
 main () {
+  files_already_updated=()
   for extension in $all_extensions
   do
     files=`find $project_name -type f -name "*$extension" | grep -o "\/\w*$extension*$" |
@@ -91,9 +92,12 @@ main () {
 
       echo "Rename file reference with name ending in *$extension"
 
-
-      #Just execute when not in stash (still implementing)
-      replace_filename_in_all_files $file_name $new_file_name
+      #${files_already_updated[*]/%$file_name/}: for-each on files_already_updated executing sed s/$file_name$//
+      if [ "${files_already_updated[*]/%$file_name/}" == "${files_already_updated[*]}" ]
+      then
+        replace_filename_in_all_files $file_name $new_file_name
+        files_already_updated+=($file_name)
+      fi
     done
   done
 
@@ -108,3 +112,4 @@ main () {
 
 main
 git add .
+git reset HEAD refactor_improved.sh
