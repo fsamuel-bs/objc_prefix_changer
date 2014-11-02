@@ -14,12 +14,6 @@ test_name=`# PUT TEST PROJECT NAME HERE`
 project=`find ${project_name}.xcodeproj -name "project.pbxproj"`
 storyboard=`find . -name "MainStoryboard.storyboard"`
 
-#replace_filename_in_obj_c_files $file_name $new_file_name $file_to_replace_pattern
-#replace_filename_in_obj_c_files () {
-#  tops replace "$1" with "$2" $3
-#}
-#export -f replace_filename_in_file
-
 #replace_filename_in_file $file_name $new_file_name $file_to_replace_pattern
 replace_filename_in_file () {
   sed -e "s/\([^a-zA-Z]\)$1\([^a-zA-Z]\)/\1$2\2/g" \
